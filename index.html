@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steel Plate Fault Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Steel Plate Fault Prediction</h1>
+            <p class="mt-3 text-lg text-gray-600">Enter the 27 features of a steel plate to predict its fault type.</p>
+        </header>
+
+        <main class="max-w-7xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+            <form id="prediction-form">
+                <div class="form-grid">
+                    <!-- Dynamically generated input fields will go here -->
+                </div>
+                <div class="mt-8 text-center">
+                    <button type="submit" id="predict-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        <span id="button-text">Predict Fault</span>
+                        <span id="loading-spinner" class="hidden">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Predicting...
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="result-container" class="mt-10 text-center hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Prediction Result</h2>
+                <div id="result-box" class="text-2xl md:text-3xl font-bold p-6 rounded-lg inline-block">
+                    <!-- Result will be displayed here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const formGrid = document.querySelector('.form-grid');
+        const predictionForm = document.getElementById('prediction-form');
+        const resultContainer = document.getElementById('result-container');
+        const resultBox = document.getElementById('result-box');
+        const predictButton = document.getElementById('predict-button');
+        const buttonText = document.getElementById('button-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        const featureNames = [
+            'X_Minimum', 'X_Maximum', 'Y_Minimum', 'Y_Maximum', 'Pixels_Areas',
+            'X_Perimeter', 'Y_Perimeter', 'Sum_of_Luminosity', 'Minimum_of_Luminosity',
+            'Maximum_of_Luminosity', 'Length_of_Conveyer', 'TypeOfSteel_A300',
+            'TypeOfSteel_A400', 'Steel_Plate_Thickness', 'Edges_Index',
+            'Empty_Index', 'Square_Index', 'Outside_X_Index', 'Edges_X_Index',
+            'Edges_Y_Index', 'Outside_Global_Index', 'LogOfAreas',
+            'Log_X_Index', 'Log_Y_Index', 'Orientation_Index', 'Luminosity_Index',
+            'SigmoidOfAreas'
+        ];
+        
+        // Example data for easy testing
+        const exampleData = [42, 50, 2709, 2749, 267, 17, 44, 24220, 76, 108, 1687, 1, 0, 80, 0.0498, 0.2415, 0.1818, 0.0047, 0.4706, 0.1, 1, 2.4265, 0.9031, 1.6435, 0.8182, -0.2913, 0.5822];
+
+        // Create form fields dynamically
+        featureNames.forEach((name, index) => {
+            const div = document.createElement('div');
+            div.className = 'flex flex-col';
+            const label = document.createElement('label');
+            label.htmlFor = name;
+            label.className = 'mb-1 font-medium text-gray-700';
+            label.textContent = name.replace(/_/g, ' ');
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.id = name;
+            input.name = name;
+            input.step = 'any'; // Allow floating point numbers
+            input.className = 'p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500';
+            input.placeholder = `e.g., ${exampleData[index]}`;
+            input.value = exampleData[index]; // Pre-fill with example data
+            input.required = true;
+            div.appendChild(label);
+            div.appendChild(input);
+            formGrid.appendChild(div);
+        });
+
+        predictionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            buttonText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            predictButton.disabled = true;
+            resultContainer.classList.add('hidden');
+
+            const formData = new FormData(predictionForm);
+            const features = [];
+            featureNames.forEach(name => {
+                features.push(parseFloat(formData.get(name)));
+            });
+
+            const apiPayload = {
+                features: features
+            };
+
+            try {
+                // The API URL is relative to the current page, which works when Flask serves both
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(apiPayload),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayResult(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                displayError('Failed to get a prediction. Please check the console for details.');
+            } finally {
+                // Hide loading state
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                predictButton.disabled = false;
+            }
+        });
+
+        function displayResult(data) {
+            const faults = data.prediction.identified_faults;
+            resultContainer.classList.remove('hidden');
+            
+            if (faults.includes("No Faults Detected")) {
+                resultBox.textContent = "No Faults Detected";
+                resultBox.className = 'text-2xl md:text-3xl font-bold p-6 rounded-lg inline-block bg-green-100 text-green-800';
+            } else {
+                resultBox.textContent = faults.join(', ');
+                resultBox.className = 'text-2xl md:text-3xl font-bold p-6 rounded-lg inline-block bg-red-100 text-red-800';
+            }
+        }
+
+        function displayError(message) {
+            resultContainer.classList.remove('hidden');
+            resultBox.textContent = message;
+            resultBox.className = 'text-xl font-bold p-6 rounded-lg inline-block bg-yellow-100 text-yellow-800';
+        }
+    </script>
+</body>
+</html>
