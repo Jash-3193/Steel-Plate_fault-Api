@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -166,4 +165,3 @@ def train_and_save_model():
 
 if __name__ == '__main__':
     train_and_save_model()
->>>>>>> c6743b9ff785ce91499531b64ac3600a41a8df02
