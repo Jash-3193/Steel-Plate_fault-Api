@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import numpy as np
 from flask import Flask, request, jsonify
 import joblib
@@ -210,4 +209,3 @@ try:
 except FileNotFoundError as e:
     print(f"CRITICAL ERROR: Could not load model assets. {e}")
 
->>>>>>> c6743b9ff785ce91499531b64ac3600a41a8df02
