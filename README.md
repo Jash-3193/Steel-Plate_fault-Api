@@ -10,12 +10,6 @@ Try the live version deployed on Render:
 
 ---
 
-## 📲 Application Preview
-
-&#x20;
-
----
-
 ## 🔍 How to Use the Web App
 
 The application offers three simple ways to get predictions:
