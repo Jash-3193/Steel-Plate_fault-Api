@@ -1,0 +1,14 @@
+<<<<<<< HEAD
+Flask==2.2.2
+gunicorn==20.1.0
+numpy==1.23.5
+pandas==1.5.3
+scikit-learn==1.2.2
+=======
+Flask==2.2.2
+gunicorn==20.1.0
+numpy==1.23.5
+pandas==1.5.3
+scikit-learn==1.2.2
+>>>>>>> c6743b9ff785ce91499531b64ac3600a41a8df02
+joblib==1.2.0
