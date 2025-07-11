@@ -1,102 +1,136 @@
-AI Steel Plate Fault Detector
-A user-friendly web application that uses a machine learning model to classify seven different types of faults on steel plates. This tool provides an interactive interface for real-time predictions.
+# AI Steel Plate Fault Detector
 
-Live Application
+A user-friendly web application that leverages a machine learning model to classify seven different types of faults in steel plates. The tool offers an interactive interface for real-time predictions.
+
+## 🔗 Live Application
+
 Try the live version deployed on Render:
 
-https://steel-plate-fault-api.onrender.com
+[Steel Plate Fault Detector](https://steel-plate-fault-api.onrender.com)
 
-Application Preview
-How to Use the Web App
-The application provides three easy ways to get a prediction:
+---
 
-Load Example: Click the "Load Example" button to instantly fill the form with random data from the dataset. This is the quickest way to see the model in action.
+## 📲 Application Preview
 
-Upload CSV: Click "Upload CSV" to select a file from your computer. The data will appear in a table; click any row to load its values into the form.
+&#x20;
 
-Manual Entry: Directly type or paste the 27 feature values into the input fields.
+---
 
-Once the data is loaded, click the "Predict Fault" button to see the result.
+## 🔍 How to Use the Web App
 
-Features
-Interactive UI: A clean and responsive user interface for easy interaction.
+The application offers three simple ways to get predictions:
 
-Multiple Input Methods: Supports manual entry, random examples, and CSV file uploads.
+### 1. Load Example
 
-Real-Time Predictions: Get instant fault classifications from the trained model.
+Click the **"Load Example"** button to automatically fill the form with random sample data. It's the quickest way to see how the model works.
 
-Multi-Label Classification: Predicts one or more of seven possible fault types.
+### 2. Upload CSV
 
-RESTful API Backend: Built on a robust Flask backend that also serves the front end.
+Click **"Upload CSV"** to select a CSV file from your device. The data will display in a table. Click any row to load its values into the form.
 
-Technology Stack
-Frontend: HTML, Tailwind CSS, JavaScript
+### 3. Manual Entry
 
-Backend: Python, Flask
+Directly type or paste the 27 feature values into the provided input fields.
 
-Machine Learning: Scikit-learn, Pandas, NumPy
+Once data is loaded, click **"Predict Fault"** to see the classification results instantly.
 
-WSGI Server: Gunicorn
+---
 
-Deployment: Render, Git & Git LFS
+## ✨ Features
 
-Local Development Setup
-To run this project on your local machine, follow these steps:
+* **Interactive UI:** Clean, responsive design for seamless user interaction.
+* **Multiple Input Methods:** Supports manual entry, random example loading, and CSV uploads.
+* **Real-Time Predictions:** Instant fault classification using the trained ML model.
+* **Multi-Label Classification:** Predicts one or more of seven possible fault types.
+* **RESTful API Backend:** Built with Flask serving both the frontend and backend.
 
-1. Prerequisites
+---
 
-Python 3.11
+## 🔧 Technology Stack
 
-Git
+| Layer                | Technology                     |
+| -------------------- | ------------------------------ |
+| **Frontend**         | HTML, Tailwind CSS, JavaScript |
+| **Backend**          | Python, Flask                  |
+| **Machine Learning** | Scikit-learn, Pandas, NumPy    |
+| **WSGI Server**      | Gunicorn                       |
+| **Deployment**       | Render, Git, Git LFS           |
 
-Git LFS (Installation Guide)
+---
 
-2. Clone the Repository
+## 💪 Local Development Setup
 
-# Initialize Git LFS
+### 1. Prerequisites
+
+* Python 3.11
+* Git
+* Git LFS ([Installation Guide](https://git-lfs.github.com/))
+
+### 2. Clone the Repository
+
+```bash
+# Install Git LFS
 git lfs install
 
 # Clone the repository
 git clone https://github.com/Ashvin1125/Steel-Plate_fault-Api.git
 cd Steel-Plate_fault-Api
+```
 
-3. Create a Virtual Environment (Recommended)
+### 3. Create Virtual Environment (Recommended)
 
-# Create a virtual environment
+```bash
 python -m venv env
 
-# Activate it
-# On Windows:  env\Scripts\activate
-# On macOS/Linux: source env/bin/activate
+# Activate:
+# Windows
+env\Scripts\activate
 
-4. Install Dependencies
-The required packages are listed in requirements.txt.
+# macOS/Linux
+source env/bin/activate
+```
 
+### 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-5. Run the Flask App
-The application uses the flask command to run the development server.
+### 5. Run the Flask Application
 
+```bash
 flask run
+```
 
-The application will be available at http://127.0.0.1:5000.
+Visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-API Endpoint Details
-While the project is a full web app, the backend still exposes a JSON API endpoint.
+---
 
-POST /predict
-Request Body: A JSON object with a key features, which is a list containing 27 numeric values.
+## 🔝 API Endpoint Details
 
-Example cURL Request:
+### POST `/predict`
 
+**Request Body:**
+
+```json
+{
+  "features": [42, 50, 2709, 2749, 267, 17, 44, 24220, 76, 108, 1687, 1, 0, 80, 0.0498, 0.2415, 0.1818, 0.0047, 0.4706, 0.1, 1, 2.4265, 0.9031, 1.6435, 0.8182, -0.2913, 0.5822]
+}
+```
+
+**Example cURL:**
+
+```bash
 curl -X POST http://127.0.0.1:5000/predict \
 -H "Content-Type: application/json" \
 -d '{
     "features": [42, 50, 2709, 2749, 267, 17, 44, 24220, 76, 108, 1687, 1, 0, 80, 0.0498, 0.2415, 0.1818, 0.0047, 0.4706, 0.1, 1, 2.4265, 0.9031, 1.6435, 0.8182, -0.2913, 0.5822]
 }'
+```
 
-Success Response (200 OK):
+**Success Response:**
 
+```json
 {
   "prediction": {
     "identified_faults": ["Pastry"],
@@ -104,3 +138,15 @@ Success Response (200 OK):
   },
   "raw_output": [1, 0, 0, 0, 0, 0, 0]
 }
+```
+
+---
+
+## 📍 Links
+
+* 📅 **Live App:** [https://steel-plate-fault-api.onrender.com](https://steel-plate-fault-api.onrender.com)
+* 📁 **Repository:** [GitHub](https://github.com/Ashvin1125/Steel-Plate_fault-Api)
+
+---
+
+> Built with ❤️ by Ashvin Patel
