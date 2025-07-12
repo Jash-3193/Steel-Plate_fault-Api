@@ -144,7 +144,7 @@ curl -X POST http://127.0.0.1:5000/predict \
 ---
 
 > Built by
-> Jash
-> Fenil
-> Ashvin
-> Vaidik
+> Jash,
+> Fenil,
+> Ashvin,
+> Vaidik.
