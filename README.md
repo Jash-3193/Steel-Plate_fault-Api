@@ -139,8 +139,12 @@ curl -X POST http://127.0.0.1:5000/predict \
 ## 📍 Links
 
 * 📅 **Live App:** [https://steel-plate-fault-api.onrender.com](https://steel-plate-fault-api.onrender.com)
-* 📁 **Repository:** [GitHub](https://github.com/Ashvin1125/Steel-Plate_fault-Api)
+* 📁 **Repository:** [GitHub](https://github.com/Jash-3193/Steel-Plate_fault-Api.git)
 
 ---
 
-> Built with ❤️ by Ashvin Patel
+> Built by
+> Jash
+> Fenil
+> Ashvin
+> Vaidik
